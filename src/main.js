@@ -7,9 +7,9 @@ import TheHeader from "./components/UI/TheHeader.vue";
 
 const app = createApp(App);
 
-app.use(store);
-
 app.use(router);
+
+app.use(store);
 
 app.component("the-header", TheHeader);
 

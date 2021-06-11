@@ -3,19 +3,28 @@
     <div class="product__data">
       <div class="product__text">
         <h3>{{ code }} - {{ name }}</h3>
-        <p>{{ desc }}</p>
+        <p v-if="userDetail">
+          {{ active }} <br />
+          {{ desc }}
+        </p>
       </div>
     </div>
     <div class="product__actions">
-      <button>Edit</button>
-      <button>Delete</button>
+      <button @click="toggleDetail">Detail</button>
     </div>
   </li>
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
-  props: ["id", "code", "name", "desc"],
+  props: ["id", "code", "name", "desc", "active"],
+  computed: {
+    ...mapState("usersdetail", ["userDetail"]),
+  },
+  methods: {
+    ...mapActions("usersdetail", ["toggleDetail"]),
+  },
 };
 </script>
 

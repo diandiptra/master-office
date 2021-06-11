@@ -1,4 +1,13 @@
 <template>
+  <div>
+    <!-- <input type="text" name="search" id="seacrh" v-model="enterSearch" /> -->
+    <select name="search" id="search" v-model="enterSearch">
+      <option value="activated">Active</option>
+      <option value="deactive">Not Active</option>
+    </select>
+    &nbsp;
+    <button @click="searchSubmit">Search</button>
+  </div>
   <section>
     <ul>
       <the-user-list
@@ -8,37 +17,52 @@
         :code="user.code"
         :name="user.name"
         :desc="user.description"
+        :active="user.active"
       ></the-user-list>
     </ul>
   </section>
 </template>
 
 <script>
-// import axios from "axios";
 import TheUserList from "../components/users/TheUsersList.vue";
+import { APIPATH_MASTEROFFICE } from "../api/api-paths";
+import { fnGET } from "../api/api-methods";
 
 export default {
+  name: "UserList",
+  data() {
+    return {
+      users: [],
+      enterSearch: "activated",
+    };
+  },
   components: {
     TheUserList,
   },
-  computed: {
-    users() {
-      return this.$store.state.users;
+  methods: {
+    searchSubmit() {
+      if (this.enterSearch === null || this.enterSearch === "") {
+        alert("Please anter a value!");
+      } else {
+        fnGET(
+          APIPATH_MASTEROFFICE.listUser + "?search=" + this.enterSearch
+        ).then((rsp) => {
+          this.users = rsp.data;
+          console.log(
+            APIPATH_MASTEROFFICE.listUser + "?search=" + this.enterSearch
+          );
+        });
+      }
     },
   },
   mounted() {
-    // this.$store.dispatch("getUsers");
-    this.$store.dispatch("prods/getUsers");
+    fnGET(APIPATH_MASTEROFFICE.listUser).then((rsp) => {
+      this.users = rsp.data;
+      if (!this.users) {
+        alert("Data Kosong");
+      }
+    });
   },
-  // methods: {
-  //   usersList() {
-  //     axios
-  //       .get("http://localhost:8000/userview/masteroffice/")
-  //       .then((response) => {
-  //         console.log(response);
-  //       });
-  //   },
-  // },
 };
 </script>
 
