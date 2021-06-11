@@ -16,8 +16,8 @@ const mutations = {
 };
 
 const actions = {
-  toggleDetail({ commit }) {
-    commit("showDetail");
+  toggleDetail({ commit }, id) {
+    commit("showDetail", id);
   },
 };
 
